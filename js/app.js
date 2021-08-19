@@ -1,54 +1,59 @@
-function computerPlay() {
-  let options = ["rock", "paper", "scissors"];
-  return options[Math.floor(Math.random() * options.length)];
-}
-
 let playerCounter = 0;
 let tieCounter = 0;
 let computerCounter = 0;
 
-function winner(){
-  if (playerCounter < computerCounter) {
-    alert("Computer won!")
-  } else if (playerCounter > computerCounter){
-    alert("Player won!")
-  } else {
-    alert("It's a tie!")
-  }
-}
+let buttons = document.querySelectorAll(".buttons");
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    // TO DO: process user click
+    let playerSelection = this.textContent;
+    console.log(playerSelection);
+
+    let options = ["Rock", "Paper", "Scissors"];
+    let computerSelection = options[Math.floor(Math.random() * options.length)];
+    console.log(computerSelection);
+
+    playRound(playerSelection, computerSelection);
+    updateResults();
+    if (winner()) {
+      playerCounter = 0;
+      computerCounter = 0;
+      tieCounter = 0;
+      updateResults();
+    }
+  });
+});
+
 function playRound(playerSelection, computerSelection) {
-  console.log(computerSelection);
   // your code here!
-  if (playerSelection == computerSelection) {
-    alert("It's a tie!");
+  if (playerSelection === computerSelection) {
     tieCounter += 1;
-  } else if (playerSelection == "rock" && computerSelection == "paper") {
-    alert("You lose! Paper beats rock.");
+  } else if (playerSelection === "Rock" && computerSelection === "Paper") {
     computerCounter += 1;
-  } else if (playerSelection == "paper" && computerSelection == "scissors") {
-    alert("You lose! Scissors beat paper.");
+  } else if (playerSelection === "Paper" && computerSelection === "Scissors") {
     computerCounter += 1;
-  } else if (playerSelection == "scissors" && computerSelection == "rock") {
-    alert("You lose! Rock beats scissors.");
+  } else if (playerSelection === "Scissors" && computerSelection === "Rock") {
     computerCounter += 1;
   } else {
-    alert("You win!");
     playerCounter += 1;
   }
 }
 
-function game() {
-  for (let i = 1; i <= 5; i++) {
-    console.log("it's the " + i + " round");
-    const playerSelection = prompt("Rock, Paper or Scissors?").toLowerCase();
-    const computerSelection = computerPlay();
-    console.log(playRound(playerSelection, computerSelection));
-    console.log(playerCounter);
-    console.log(tieCounter);
-    console.log(computerCounter);
-    alert("Current result is: " + "Player: " + playerCounter + " Computer: " + computerCounter + " Tie:" + tieCounter);
-  }
-  winner();
+function updateResults() {
+  document.getElementById("playerCounter").textContent = playerCounter;
+  document.getElementById("computerCounter").textContent = computerCounter;
+  document.getElementById("tieCounter").textContent = tieCounter;
 }
 
-game();
+function winner() {
+  if (playerCounter === 5 && computerCounter < 5) {
+    let isWinner = "Player wins";
+    alert(isWinner);
+    return true;
+  } else if (playerCounter < 5 && computerCounter === 5) {
+    let isWinner = "Computer wins";
+    alert(isWinner);
+    return true;
+  }
+  return false;
+}
