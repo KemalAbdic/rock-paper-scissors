@@ -9,17 +9,31 @@
     <meta name="description" content="The Odin Project game" />
     <meta name="author" content="Kemal Abdic" />
     <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <div>
-      <button class="buttons">Rock</button>
-      <button class="buttons">Paper</button>
-      <button class="buttons">Scissors</button>
+    <div class="headings">
+      <h1>Rock - Paper - Scissors</h1>
+      <h2>First one to FIVE (5) points WINS</h2>
     </div>
-    <div>
-      Player: <span id="playerCounter">0</span> Computer: <span id="computerCounter">0</span> Tie: <span id="tieCounter">0</span>
+    <div class="options">
+      <button class="buttons">
+        <img src="resources/rock.png" height="200px" width="200px" />Rock
+      </button>
+      <button class="buttons">
+        <img src="resources/paper.png" height="200px" width="200px" />Paper
+      </button>
+      <button class="buttons">
+        <img src="resources/scissors.png" height="200px" width="200px" />Scissors
+      </button>
     </div>
+    <div id="choices"></div>
+    <div class="results">
+      Player: <span id="playerCounter">0</span> Computer:
+      <span id="computerCounter">0</span> Tie: <span id="tieCounter">0</span>
+    </div>
+
     <!-- your content here... -->
     <script src="js/app.js"></script>
   </body>
