@@ -1,64 +1,74 @@
-let playerCounter = 0;
-let tieCounter = 0;
-let computerCounter = 0;
+const game = {
+  playerCounter: 0,
+  tieCounter: 0,
+  computerCounter: 0,
+  choicesElement: document.querySelector("#choices"),
+  playerCounterElement: document.getElementById("playerCounter"),
+  computerCounterElement: document.getElementById("computerCounter"),
+  tieCounterElement: document.getElementById("tieCounter"),
 
-let choices = document.querySelector("#choices");
+  playRound(playerSelection) {
+    const options = ["Rock", "Paper", "Scissors"];
+    const computerSelection = options[Math.floor(Math.random() * options.length)];
 
-let buttons = document.querySelectorAll(".buttons");
+    if (playerSelection === computerSelection) {
+      this.tieCounter++;
+      this.choicesElement.textContent = "It's a tie!";
+    } else if (playerSelection === "Rock" && computerSelection === "Paper") {
+      this.computerCounter++;
+      this.choicesElement.textContent = `You lose ${computerSelection} beats ${playerSelection}`;
+    } else if (playerSelection === "Paper" && computerSelection === "Scissors") {
+      this.computerCounter++;
+      this.choicesElement.textContent = `You lose! ${computerSelection} beat ${playerSelection}!`;
+    } else if (playerSelection === "Scissors" && computerSelection === "Rock") {
+      this.computerCounter++;
+      this.choicesElement.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
+    } else {
+      this.playerCounter++;
+      this.choicesElement.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
+    }
+  },
+
+  updateResults() {
+    const { playerCounter, computerCounter, tieCounter } = this;
+    this.playerCounterElement.textContent = playerCounter;
+    this.computerCounterElement.textContent = computerCounter;
+    this.tieCounterElement.textContent = tieCounter;
+  },
+
+  winner() {
+    const { playerCounter, computerCounter } = this;
+    if (playerCounter === 5 && computerCounter < 5) {
+      const isWinner = "Player wins! Click OK to play again.";
+      alert(isWinner);
+      return true;
+    } else if (playerCounter < 5 && computerCounter === 5) {
+      const isWinner = "Computer wins! Click OK to get revenge.";
+      this.choicesElement.textContent = "";
+      alert(isWinner);
+      return true;
+    }
+    return false;
+  },
+
+  resetGame() {
+    this.playerCounter = 0;
+    this.tieCounter = 0;
+    this.computerCounter = 0;
+    this.updateResults();
+    this.choicesElement.textContent = "";
+  },
+};
+
+const buttons = document.querySelectorAll(".buttons");
 buttons.forEach((button) => {
-  button.addEventListener("click", function () {
-    // TO DO: process user click
-    let playerSelection = this.textContent.trim();
-    console.log(playerSelection);
+  button.addEventListener("click", () => {
+    const playerSelection = button.textContent.trim();
 
-    let options = ["Rock", "Paper", "Scissors"];
-    let computerSelection = options[Math.floor(Math.random() * options.length)];
-    console.log(computerSelection);
-
-    playRound(playerSelection, computerSelection);
-    updateResults();
-    if (winner()) {
-      location.reload();
+    game.playRound(playerSelection);
+    game.updateResults();
+    if (game.winner()) {
+      game.resetGame();
     }
   });
 });
-
-function playRound(playerSelection, computerSelection) {
-  // your code here!
-  if (playerSelection === computerSelection) {
-    tieCounter += 1;
-    choices.textContent = "It's a tie!";
-  } else if (playerSelection === "Rock" && computerSelection === "Paper") {
-    computerCounter += 1;
-    choices.textContent = `You lose ${computerSelection}" beats ${playerSelection}"`;
-  } else if (playerSelection === "Paper" && computerSelection === "Scissors") {
-    computerCounter += 1;
-    choices.textContent = `You lose! ${computerSelection} beat ${playerSelection}!`;
-  } else if (playerSelection === "Scissors" && computerSelection === "Rock") {
-    computerCounter += 1;
-    choices.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
-  } else {
-    playerCounter += 1;
-    choices.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
-  }
-}
-
-function updateResults() {
-  document.getElementById("playerCounter").textContent = playerCounter;
-  document.getElementById("computerCounter").textContent = computerCounter;
-  document.getElementById("tieCounter").textContent = tieCounter;
-}
-
-function winner() {
-  if (playerCounter === 5 && computerCounter < 5) {
-    let isWinner = "Player wins! Click OK to play again.";
-    alert(isWinner);
-    return true;
-  } else if (playerCounter < 5 && computerCounter === 5) {
-    let isWinner = "Computer wins! Click OK to get revenge.";
-    choices = "";
-    alert(isWinner);
-    return true;
-  }
-  return false;
-}
