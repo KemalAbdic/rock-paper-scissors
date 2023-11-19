@@ -7,25 +7,26 @@ const game = {
   computerCounterElement: document.getElementById("computerCounter"),
   tieCounterElement: document.getElementById("tieCounter"),
 
-  playRound(playerSelection) {
+  playRound(playerSelection, computerSelection) {
     const options = ["Rock", "Paper", "Scissors"];
-    const computerSelection = options[Math.floor(Math.random() * options.length)];
 
     if (playerSelection === computerSelection) {
       this.tieCounter++;
       this.choicesElement.textContent = "It's a tie!";
-    } else if (playerSelection === "Rock" && computerSelection === "Paper") {
-      this.computerCounter++;
-      this.choicesElement.textContent = `You lose ${computerSelection} beats ${playerSelection}`;
-    } else if (playerSelection === "Paper" && computerSelection === "Scissors") {
-      this.computerCounter++;
-      this.choicesElement.textContent = `You lose! ${computerSelection} beat ${playerSelection}!`;
-    } else if (playerSelection === "Scissors" && computerSelection === "Rock") {
-      this.computerCounter++;
-      this.choicesElement.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
     } else {
-      this.playerCounter++;
-      this.choicesElement.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
+      const beats = {
+        Rock: "Scissors",
+        Paper: "Rock",
+        Scissors: "Paper",
+      };
+
+      if (beats[playerSelection] === computerSelection) {
+        this.playerCounter++;
+        this.choicesElement.textContent = `You win! ${playerSelection} beats ${computerSelection}`;
+      } else {
+        this.computerCounter++;
+        this.choicesElement.textContent = `You lose! ${computerSelection} beats ${playerSelection}`;
+      }
     }
   },
 
@@ -64,8 +65,10 @@ const buttons = document.querySelectorAll(".buttons");
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const playerSelection = button.textContent.trim();
+    const options = ["Rock", "Paper", "Scissors"];
+    const computerSelection = options[Math.floor(Math.random() * options.length)];
 
-    game.playRound(playerSelection);
+    game.playRound(playerSelection, computerSelection);
     game.updateResults();
     if (game.winner()) {
       game.resetGame();
